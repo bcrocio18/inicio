@@ -1,0 +1,38 @@
+.container {
+  text-align: center;
+  margin-top: 80px;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  color: #b70000;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 18px;
+  margin-bottom: 25px;
+}
+
+.btn {
+  padding: 12px 25px;
+  background-color: #b70000;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background-color: #8a0000;
+}
+
+.back {
+  background-color: #444;
+}
+
+.back:hover {
+  background-color: #222;
+}
