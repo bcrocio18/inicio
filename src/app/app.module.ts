@@ -2,7 +2,9 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { authInterceptor } from './service/ul/auth.interceptor';
+import { MatIconModule } from '@angular/material/icon';
+
 
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
@@ -20,14 +22,17 @@ import { InicioComponent } from './inicio/inicio.component';
   imports: [
     BrowserModule,
     FormsModule,
+    MatIconModule,
     ReactiveFormsModule,
-    AppRoutingModule, // IMPORTANTE
-    HttpClientModule
+    AppRoutingModule // IMPORTANTE
   ],
   providers: [
     provideAnimationsAsync(),
-    provideHttpClient(withInterceptors([])),
+    provideHttpClient(withInterceptors([authInterceptor])),
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+
+
