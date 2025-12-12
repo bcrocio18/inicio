@@ -1,0 +1,401 @@
+.modal-container {
+  background: rgb(211, 20, 20);
+  border-radius: 12px;
+  width: 600px; /* Ancho fijo en lugar de max-width */
+  max-width: 95vw; /* Se adapta en móviles */
+  max-height: 85vh; /* Un poco menos alto */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  margin: 0 auto; /* Centra el modal */
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+}
+
+
+/* ENCABEZADO */
+.modal-header {
+  background: linear-gradient(135deg, #4f64dd 0%, #87e2e1 100%); /* Degradado más moderno */
+  color: white;
+  padding: 24px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.modal-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(230, 7, 7, 0.1) 1%, transparent 1%);
+  background-size: 15px 15px;
+  opacity: 0.3;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  position: relative;
+  z-index: 1;
+}
+
+.episode-badge {
+  background: rgba(35, 52, 151, 0.753);
+  padding: 8px 16px;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(32, 149, 179, 0.3);
+}
+
+.close-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  line-height: 1;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+/* CONTENIDO */
+.modal-content {
+  padding: 28px;
+  overflow-y: auto;
+  flex-grow: 1;
+  background: #fafafa;
+}
+
+/* INFORMACIÓN - Con cards */
+.info-section {
+  background: white;
+  border-radius: 10px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid #eaeaea;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  font-weight: 600;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.info-value {
+  color: #1a2980;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* PERSONAJES */
+/* PERSONAJES - Mejorado */
+.personajes-section {
+  background: white;
+  border-radius: 10px;
+  padding: 24px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid #eaeaea;
+}
+
+.personajes-section h3 {
+  color: #333;
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.personajes-section h3::before {
+  content: '👥';
+  font-size: 1.2rem;
+}
+
+.personajes-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); /* 6 columnas fijas */
+  gap: 10px;
+}
+
+.personaje-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 12px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.2s ease;
+  background: #f8f9fa;
+  cursor: default;
+}
+
+.personaje-card:hover {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  transform: translateY(-3px);
+  border-color: #26d0ce;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.personaje-id {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.personaje-label {
+  font-size: 0.75rem;
+  color: #666;
+  font-family: 'Courier New', monospace;
+  font-weight: 500;
+}
+
+.mas-personajes {
+  background: #f1f3f4;
+  justify-content: center;
+  font-style: italic;
+  color: #888;
+  border-style: dashed;
+  border-color: #ccc;
+  font-size: 0.85rem;
+  grid-column: span 2; /* Ocupa más espacio */
+}
+
+/* PIE DEL MODAL */
+.modal-footer {
+  padding: 20px 28px;
+  border-top: 1px solid #eaeaea;
+  background: white;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  min-width: 100px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-secondary {
+  background: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #5a6268;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%);
+  color: white;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(26, 41, 128, 0.3);
+}
+
+
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .modal-header {
+    padding: 16px;
+  }
+  
+  .modal-header h2 {
+    font-size: 1.2rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .modal-content {
+    padding: 16px;
+  }
+  
+  .personajes-grid {
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+  }
+
+  /* Estilos para los nuevos elementos */
+
+/* Botón de favoritos en header */
+.btn-favorito {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #ccc;
+  margin-left: 10px;
+  transition: all 0.3s ease;
+}
+
+.btn-favorito.favorito {
+  color: #ffd700; /* Dorado */
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.btn-favorito:hover {
+  transform: scale(1.2);
+}
+
+/* Sección de notas */
+.notas-section {
+  margin: 20px 0;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #0077b6;
+}
+
+.notas-section h3 {
+  margin-top: 0;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.notas-textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  resize: vertical;
+  margin-bottom: 10px;
+}
+
+.notas-textarea:focus {
+  outline: none;
+  border-color: #0077b6;
+  box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.1);
+}
+
+.btn-guardar {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.3s;
+}
+
+.btn-guardar:hover:not(:disabled) {
+  background: #218838;
+}
+
+.btn-guardar:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* Botón mini en personajes */
+.btn-mini {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 0.7rem;
+  cursor: pointer;
+  margin-top: 5px;
+  transition: all 0.2s;
+}
+
+.btn-mini:hover {
+  background: #5a6268;
+}
+
+/* Botón favorito en footer */
+.btn.btn-fav {
+  background: #ffc107;
+  color: #333;
+}
+
+.btn.btn-fav.favorito {
+  background: #ffd700;
+  font-weight: bold;
+}
+
+.btn.btn-fav:hover {
+  background: #e0a800;
+}
+
+/* Hover en tarjetas de personaje */
+.personaje-card {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.personaje-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Animación para nuevos elementos */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.btn-favorito.favorito {
+  animation: pulse 0.5s ease;
+}
+}

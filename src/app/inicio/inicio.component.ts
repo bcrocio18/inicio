@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../service/api.service';
 import Swal from 'sweetalert2';
+import { Router, NavigationEnd } from '@angular/router';
+
 
 @Component({
   selector: 'app-inicio',
@@ -24,18 +26,32 @@ export class InicioComponent implements OnInit {
     status: '',
     species: '',
     gender: '',
-    origin: '',
-    location: ''
+    origin: { name: '' },
+    location: { name: '' }
+
   };
 
-  constructor(private api: ApiService) {}
+  constructor(
+    private api: ApiService,
+    private router: Router
+  ) {}
+
+  // En el método verDetalles
+  verDetalles(personaje: any) {
+    // Asegúrate de que tenga un ID válido
+    if (personaje && personaje.id) {
+      this.router.navigate(['/personaje', personaje.id]);
+    } else {
+      console.error('Personaje sin ID:', personaje);
+    }
+  }
 
   ngOnInit() {
     // Traer personajes reales
     this.api.getData().subscribe({
-      next: (res) => {
+      next: (res: any) => {
         console.log("Respuesta API:", res);
-        this.data = Array.isArray(res) ? res : [res];
+        this.data = res.results || []; // <-- Aquí están los personajes
       },
       error: (err) => console.error("Error:", err)
     });
@@ -57,12 +73,6 @@ export class InicioComponent implements OnInit {
     return personaje.id < 1000;
   }
 
-  // Métodos para acciones
-  verDetalles(personaje: any) {
-    this.personajeDetalle = { ...personaje };
-    this.mostrarDetallesModal = true;
-  }
-
   cerrarDetallesModal() {
     this.mostrarDetallesModal = false;
     this.personajeDetalle = null;
@@ -74,8 +84,8 @@ export class InicioComponent implements OnInit {
       status: personaje.status,
       species: personaje.species,
       gender: personaje.gender,
-      origin: personaje.origin?.name || personaje.origin || '',
-      location: personaje.location?.name || personaje.location || ''
+      origin: { name: personaje.origin?.name || personaje.origin || '' },
+      location: { name: personaje.location?.name || personaje.location || '' }
     };
     this.personajeSeleccionado = personaje;
     this.modoEdicion = true;
@@ -123,8 +133,8 @@ eliminarPersonaje(personaje: any) {
       status: '',
       species: '',
       gender: '',
-      origin: '',
-      location: ''
+      origin: { name: '' },
+      location: { name: '' }
     };
     this.modoEdicion = false;
     this.mostrarModal = true;
@@ -144,8 +154,8 @@ eliminarPersonaje(personaje: any) {
       status: this.nuevoPersonaje.status,
       species: this.nuevoPersonaje.species,
       gender: this.nuevoPersonaje.gender,
-      origin: this.nuevoPersonaje.origin ? { name: this.nuevoPersonaje.origin } : undefined,
-      location: this.nuevoPersonaje.location ? { name: this.nuevoPersonaje.location } : undefined
+      origin: this.nuevoPersonaje.origin.name ? { name: this.nuevoPersonaje.origin.name } : undefined,
+      location: this.nuevoPersonaje.location.name ? { name: this.nuevoPersonaje.location.name } : undefined
     };
 
     this.api.createCharacter(personajeParaGuardar).subscribe(res => {
@@ -171,16 +181,21 @@ eliminarPersonaje(personaje: any) {
 
     const index = this.fakeDB.findIndex(p => p.id === this.personajeSeleccionado.id);
     if (index > -1) {
-      this.fakeDB[index] = {
-        ...this.fakeDB[index],
-        name: this.nuevoPersonaje.name,
-        status: this.nuevoPersonaje.status,
-        species: this.nuevoPersonaje.species,
-        gender: this.nuevoPersonaje.gender,
-        origin: this.nuevoPersonaje.origin ? { name: this.nuevoPersonaje.origin } : undefined,
-        location: this.nuevoPersonaje.location ? { name: this.nuevoPersonaje.location } : undefined
+  this.fakeDB[index] = {
+    ...this.fakeDB[index],
+    name: this.nuevoPersonaje.name,
+    status: this.nuevoPersonaje.status,
+    species: this.nuevoPersonaje.species,
+    gender: this.nuevoPersonaje.gender,
 
-      };
+    origin: this.nuevoPersonaje.origin?.name
+      ? { name: this.nuevoPersonaje.origin.name }
+      : { name: this.nuevoPersonaje.origin },
+
+    location: this.nuevoPersonaje.location?.name
+      ? { name: this.nuevoPersonaje.location.name }
+      : { name: this.nuevoPersonaje.location }
+  };
       
       // Actualizar localStorage
       localStorage.setItem('fakeDB', JSON.stringify(this.fakeDB));

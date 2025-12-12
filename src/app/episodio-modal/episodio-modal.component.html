@@ -1,0 +1,76 @@
+<div class="modal-container">
+  <!-- ENCABEZADO -->
+  <div class="modal-header">
+    <h2>
+      <span class="episode-badge">{{ episodio.episode || 'S??E??' }}</span>
+      {{ episodio.name || 'Episodio' }}
+      <!-- EVENT LISTENER para favoritos -->
+      <button class="btn-favorito" 
+              (click)="toggleFavorito()"
+              [class.favorito]="esFavorito"
+              title="{{ esFavorito ? 'Quitar de favoritos' : 'Añadir a favoritos' }}">
+        {{ esFavorito ? '★' : '☆' }}
+      </button>
+    </h2>
+    <button (click)="cerrar()" class="close-btn">×</button>
+  </div>
+
+  <!-- CONTENIDO -->
+  <div class="modal-content">
+    <!-- INFORMACIÓN BÁSICA -->
+    <div class="info-section">
+      <div class="info-row">
+        <span class="info-label">Fecha de emisión:</span>
+        <span class="info-value">{{ episodio.air_date || 'Desconocida' }}</span>
+      </div>
+      
+      <div class="info-row">
+        <span class="info-label">ID Episodio:</span>
+        <span class="info-value">{{ episodio.id || 'N/A' }}</span>
+      </div>
+      
+      <div class="info-row" *ngIf="episodio.characters">
+        <span class="info-label">Personajes:</span>
+        <span class="info-value">{{ episodio.characters.length }}</span>
+      </div>
+    </div>
+
+
+    <!-- LISTA DE PERSONAJES (con Event Listeners) -->
+    <div class="personajes-section" *ngIf="episodio.characters && episodio.characters.length > 0">
+      <h3>Personajes en este episodio</h3>
+      
+      <div class="personajes-grid">
+        <!-- EVENT LISTENER: click en cada personaje -->
+        <div class="personaje-card" 
+             *ngFor="let url of episodio.characters.slice(0, 12); let i = index"
+             (click)="onPersonajeClick(extraerIdPersonaje(url))"
+             [title]="'Click para ver personaje ID ' + extraerIdPersonaje(url)">
+          
+          <div class="personaje-id">
+            {{ extraerIdPersonaje(url) }}
+          </div>
+          <span class="personaje-label">ID {{ extraerIdPersonaje(url) }}</span>
+          </div>
+        
+        <div class="personaje-card mas-personajes" *ngIf="episodio.characters.length > 12">
+          +{{ episodio.characters.length - 12 }} más
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PIE DEL MODAL -->
+  <div class="modal-footer">
+    <button (click)="cerrar()" class="btn btn-secondary">
+      Cerrar
+    </button>
+    
+    <!-- Botón con Event Listener personalizado -->
+    <button (click)="toggleFavorito()" 
+            class="btn btn-fav"
+            [class.favorito]="esFavorito">
+      {{ esFavorito ? '★ Quitar favorito' : '☆ Añadir a favoritos' }}
+    </button>
+  </div>
+</div>

@@ -1,217 +1,222 @@
-<!-- Encabezado con breadcrumb y botón crear -->
-<div class="header">
-  <div class="breadcrumb">
-    <a href="#">Inicio</a>   </div>
-  <button class="btn btn-primary" (click)="abrirModal()">+ Crear Personaje</button>
+<!-- ======================= ENCABEZADO CURVO ======================= -->
+<div class="seccion-curva">
+  <h3>Gestión de Personajes</h3>
 </div>
 
-<!-- Sección principal con ambas tablas unidas -->
-<div class="section-card">
-  <h2 class="section-title">Gestión de Personajes</h2>
-  
-  <!-- Tabla unificada -->
-  <div class="table-responsive">
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Estado</th>
-          <th>Especie</th>
-          <th>Género</th>
-          <th>Origen</th>
-          <th>Ubicación</th>
-          <th width="120" class="text-center">Opciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Personajes de la API -->
-        <tr *ngFor="let personaje of data" >
-             <td>{{ personaje.name }}</td>
-          <td>
-            <span class="badge" [ngClass]="{
-              'badge-success': personaje.status === 'Alive',
-              'badge-danger': personaje.status === 'Dead',
-              'badge-warning': personaje.status !== 'Alive' && personaje.status !== 'Dead'
-            }">
-              {{ personaje.status }}
-            </span>
-          </td>
-          <td>{{ personaje.species }}</td>
-          <td>{{ personaje.gender }}</td>
-          <td>{{ personaje.origin?.name }}</td>
-          <td>{{ personaje.location?.name }}</td>
-          <td class="text-center">
-            <div class="options-container">
-              <button class="btn-icon btn-view" title="Ver detalles" (click)="verDetalles(personaje); $event.stopPropagation()">
-                <mat-icon matListItemIcon>visibility</mat-icon>
-              </button>
-              <button class="btn-icon btn-edit" title="Editar" (click)="editarPersonaje(personaje); $event.stopPropagation()">
-                <mat-icon matListItemIcon>edit</mat-icon>
-              </button>
-              <button class="btn-icon btn-delete" title="Eliminar" (click)="eliminarPersonaje(personaje); $event.stopPropagation()">
-                <mat-icon matListItemIcon>delete_forever</mat-icon>
-              </button>
-            </div>
-          </td>
-        </tr>
-        
-        <!-- Personajes creados (fakeDB) -->
-        <tr *ngFor="let personaje of fakeDB" 
-            [class.selected]="personajeSeleccionado?.id === personaje.id"
-            (click)="seleccionarPersonaje(personaje)">
-            <td>{{ personaje.name }}</td>
-          <td>
-            <span class="badge" [ngClass]="{
-              'badge-success': personaje.status === 'Alive' || personaje.status === 'vivo',
-              'badge-danger': personaje.status === 'Dead' || personaje.status === 'muerto',
-              'badge-warning': personaje.status && !['Alive', 'vivo', 'Dead', 'muerto'].includes(personaje.status)
-            }">
-              {{ personaje.status || 'Desconocido' }}
-            </span>
-          </td>
-          <td>{{ personaje.species || 'No especificado' }}</td>
-          <td>{{ personaje.gender || 'No especificado' }}</td>
-          <td>{{ personaje.origin?.name || 'No especificado' }}</td>
-          <td>{{ personaje.location?.name || 'No especificado' }}</td>
-          <td class="text-center">
-            <div class="options-container">
-              <button class="btn-icon btn-view" title="Ver detalles" (click)="verDetalles(personaje); $event.stopPropagation()">
-                <mat-icon matListItemIcon>visibility</mat-icon>
-              </button>
-              <button class="btn-icon btn-edit" title="Editar" (click)="editarPersonaje(personaje); $event.stopPropagation()">
-                <mat-icon matListItemIcon>edit</mat-icon>
-              </button>
-              <button class="btn-icon btn-delete" title="Eliminar" (click)="eliminarPersonaje(personaje); $event.stopPropagation()">
-                <mat-icon matListItemIcon>delete_forever</mat-icon>
-              </button>
-            </div>
-          </td>
-        </tr>
-        
-        <!-- Mensaje si no hay datos -->
-        <tr *ngIf="data.length === 0 && fakeDB.length === 0">
-          <td colspan="8" class="text-center no-data">
-            No hay personajes disponibles. ¡Crea uno nuevo!
-          </td>
-        </tr>
-      </tbody>
-    </table>
+<!-- ======================= CONTENIDO PRINCIPAL ======================= -->
+<div class="container">
+
+  <!-- Header con botón -->
+  <div class="header">
+    <div class="breadcrumb">
+      <a href="#">Inicio</a> / <span>Personajes</span>
+    </div>
+
+    <button class="buttonPrimary" (click)="abrirModal()">+ Crear Personaje</button>
   </div>
-  
-  <!-- Contador de personajes -->
-  <div class="table-footer">
-    <div class="total-items">
-      Total: {{ data.length + fakeDB.length }} personajes
-      <span class="api-count">({{ data.length }} de API)</span>
+
+  <!-- Contenedor tarjeta de tabla -->
+  <div class="table-card">
+    <h2 class="custom-title-right">Listado de Personajes</h2>
+
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th class="thp">Nombre</th>
+            <th class="thp">Estado</th>
+            <th class="thp">Especie</th>
+            <th class="thp">Género</th>
+            <th class="thp">Origen</th>
+            <th class="thp">Ubicación</th>
+            <th class="thp text-center">Opciones</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <!-- API -->
+          <tr *ngFor="let personaje of data">
+            <td>{{ personaje.name }}</td>
+
+            <td>
+              <span class="badge"
+                [ngClass]="{
+                'badge-success': personaje.status === 'Alive',
+                'badge-danger': personaje.status === 'Dead',
+                'badge-warning': personaje.status !== 'Alive' && personaje.status !== 'Dead'
+              }">
+                {{ personaje.status }}
+              </span>
+            </td>
+
+            <td>{{ personaje.species }}</td>
+            <td>{{ personaje.gender }}</td>
+            <td>{{ personaje.origin?.name }}</td>
+            <td>{{ personaje.location?.name }}</td>
+
+
+            <td class="text-center">
+             <button class="btn-icon btn-visi" (click)="verDetalles(personaje)">
+              <mat-icon>visibility</mat-icon>
+            </button>
+              <button class="btn-icon btn-edit" (click)="editarPersonaje(personaje)"><mat-icon>edit</mat-icon></button>
+              <button class="btn-icon btn-delete" (click)="eliminarPersonaje(personaje)"><mat-icon>delete_forever</mat-icon></button>
+            </td>
+          </tr>
+
+          <!-- Locales -->
+          <tr *ngFor="let personaje of fakeDB">
+            <td>{{ personaje.name }}</td>
+
+            <td>
+              <span class="badge"
+                [ngClass]="{
+                'badge-success': personaje.status === 'Alive' || personaje.status === 'vivo',
+                'badge-danger': personaje.status === 'Dead' || personaje.status === 'muerto',
+                'badge-warning': personaje.status && !['Alive','vivo','Dead','muerto'].includes(personaje.status)
+              }">
+                {{ personaje.status || 'Desconocido' }}
+              </span>
+            </td>
+
+            <td>{{ personaje.species || 'No especificado' }}</td>
+            <td>{{ personaje.gender || 'No especificado' }}</td>
+            <td>{{ personaje.origin?.name || personaje.origin || 'No especificado' }}</td>
+            <td>{{ personaje.location?.name || personaje.location || 'No especificado' }}</td>
+
+
+            <td class="text-center">
+              <button class="btn-icon btn-visi" (click)="verDetalles(personaje)"><mat-icon>visibility</mat-icon></button>
+              <button class="btn-icon btn-edit" (click)="editarPersonaje(personaje)"><mat-icon>edit</mat-icon></button>
+              <button class="btn-icon btn-delete" (click)="eliminarPersonaje(personaje)"><mat-icon>delete_forever</mat-icon></button>
+            </td>
+          </tr>
+
+          <tr *ngIf="data.length === 0 && fakeDB.length === 0">
+            <td colspan="7" class="no-data">No hay personajes disponibles. ¡Agrega uno!</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Contador -->
+    <div class="table-footer">
+      Total: <b>{{ data.length + fakeDB.length }}</b> personajes
+      <span class="api-count">({{ data.length }} API)</span>
       <span class="db-count">({{ fakeDB.length }} creados)</span>
     </div>
   </div>
 </div>
 
-<!-- Modal para crear/editar personaje -->
+<!-- ======================= MODAL CREAR / EDITAR ======================= -->
 <div class="modal" *ngIf="mostrarModal">
   <div class="modal-content">
-    <span class="close" (click)="cerrarModal()">&times;</span>
-    <h3>{{ modoEdicion ? 'Editar' : 'Crear' }} Personaje</h3>
+    <button class="cerrar-modal" (click)="cerrarModal()">✕</button>
+
+    <h3>{{ modoEdicion ? "Editar" : "Crear" }} Personaje</h3>
+
     <form (ngSubmit)="modoEdicion ? actualizarPersonaje() : crearPersonaje()">
+
+      <!-- NOMBRE -->
       <div class="form-group">
-        <label>Nombre:</label>
+        <label>Nombre</label>
         <input type="text" [(ngModel)]="nuevoPersonaje.name" name="name" required>
       </div>
+
+      <!-- ESTADO -->
       <div class="form-group">
-        <label>Estado:</label>
+        <label>Estado</label>
         <select [(ngModel)]="nuevoPersonaje.status" name="status">
-          <option value="">Seleccionar...</option>
+          <option value="">Seleccionar…</option>
           <option value="Alive">Vivo</option>
           <option value="Dead">Muerto</option>
           <option value="unknown">Desconocido</option>
-          <option value="vivo">Vivo (personalizado)</option>
-          <option value="muerto">Muerto (personalizado)</option>
         </select>
       </div>
+
+      <!-- ESPECIE -->
       <div class="form-group">
-        <label>Especie:</label>
-        <input type="text" [(ngModel)]="nuevoPersonaje.species" name="species" placeholder="Humano, Alien, etc.">
+        <label>Especie</label>
+        <input type="text" [(ngModel)]="nuevoPersonaje.species" name="species">
       </div>
+
+      <!-- GÉNERO -->
       <div class="form-group">
-        <label>Género:</label>
+        <label>Género</label>
         <select [(ngModel)]="nuevoPersonaje.gender" name="gender">
-          <option value="">Seleccionar...</option>
+          <option value="">Seleccionar…</option>
           <option value="Male">Masculino</option>
           <option value="Female">Femenino</option>
           <option value="Genderless">Sin género</option>
-          <option value="unknown">Desconocido</option>
         </select>
       </div>
+
+      <!-- ORIGEN -->
       <div class="form-group">
-        <label>Origen:</label>
-        <input type="text" [(ngModel)]="nuevoPersonaje.origin" name="origin" placeholder="Tierra, Marte, etc.">
+        <label>Origen</label>
+        <input 
+          type="text" 
+          [(ngModel)]="nuevoPersonaje.origin.name" 
+          name="origin" 
+          placeholder="Ej. Earth, Mars, Unknown">
       </div>
+
+      <!-- UBICACIÓN -->
       <div class="form-group">
-        <label>Ubicación:</label>
-        <input type="text" [(ngModel)]="nuevoPersonaje.location" name="location" placeholder="Ciudad, Planeta, etc.">
+        <label>Ubicación</label>
+        <input 
+          type="text" 
+          [(ngModel)]="nuevoPersonaje.location.name" 
+          name="location" 
+          placeholder="Ej. Citadel of Ricks, Galaxy A12">
       </div>
+
+      <!-- BOTONES -->
       <div class="form-actions">
-        <button type="button" class="btn btn-secondary" (click)="cerrarModal()">Cancelar</button>
-        <button type="submit" class="btn btn-success">
+        <button class="buttonSecundary" type="button" (click)="cerrarModal()">Cancelar</button>
+        <button class="buttonPrimary" type="submit">
           {{ modoEdicion ? 'Actualizar' : 'Guardar' }}
         </button>
       </div>
+
     </form>
   </div>
 </div>
 
-<!-- Modal para ver detalles -->
+<!-- ======================= MODAL DETALLES ======================= -->
 <div class="modal" *ngIf="mostrarDetallesModal">
   <div class="modal-content modal-lg">
-    <span class="close" (click)="cerrarDetallesModal()">&times;</span>
-    <h3>Detalles del Personaje</h3>
-    <div class="character-details" *ngIf="personajeDetalle">
-      <div class="detail-row">
-        <div class="detail-label">ID:</div>
-        <div class="detail-value">{{ personajeDetalle.id }}</div>
-      </div>
-      <div class="detail-row">
-        <div class="detail-label">Nombre:</div>
-        <div class="detail-value">{{ personajeDetalle.name }}</div>
-      </div>
-      <div class="detail-row">
-        <div class="detail-label">Estado:</div>
-        <div class="detail-value">
-          <span class="badge" [ngClass]="{
+    <button class="cerrar-modal" (click)="cerrarDetallesModal()">✕</button>
+
+    <h3>Detalles del personaje</h3>
+
+    <div class="details-container" *ngIf="personajeDetalle">
+
+      <div class="detail"><b>ID:</b> {{ personajeDetalle.id }}</div>
+      <div class="detail"><b>Nombre:</b> {{ personajeDetalle.name }}</div>
+
+      <div class="detail">
+        <b>Estado:</b>
+        <span class="badge"
+          [ngClass]="{
             'badge-success': personajeDetalle.status === 'Alive' || personajeDetalle.status === 'vivo',
             'badge-danger': personajeDetalle.status === 'Dead' || personajeDetalle.status === 'muerto',
-            'badge-warning': personajeDetalle.status && !['Alive', 'vivo', 'Dead', 'muerto'].includes(personajeDetalle.status)
+            'badge-warning': true
           }">
-            {{ personajeDetalle.status || 'Desconocido' }}
-          </span>
-        </div>
+          {{ personajeDetalle.status }}
+        </span>
       </div>
-      <div class="detail-row">
-        <div class="detail-label">Especie:</div>
-        <div class="detail-value">{{ personajeDetalle.species || 'No especificado' }}</div>
-      </div>
-      <div class="detail-row">
-        <div class="detail-label">Género:</div>
-        <div class="detail-value">{{ personajeDetalle.gender || 'No especificado' }}</div>
-      </div>
-      <div class="detail-row">
-        <div class="detail-label">Origen:</div>
-        <div class="detail-value">{{ personajeDetalle.origin?.name || personajeDetalle.origin || 'No especificado' }}</div>
-      </div>
-      <div class="detail-row">
-        <div class="detail-label">Ubicación:</div>
-        <div class="detail-value">{{ personajeDetalle.location?.name || personajeDetalle.location || 'No especificado' }}</div>
-      </div>
-      <div class="detail-row" *ngIf="esDeAPI(personajeDetalle)">
-        <div class="detail-label">Fuente:</div>
-        <div class="detail-value"><span class="badge badge-api">API Rick and Morty</span></div>
-      </div>
-      <div class="detail-row" *ngIf="!esDeAPI(personajeDetalle)">
-        <div class="detail-label">Fuente:</div>
-        <div class="detail-value"><span class="badge badge-local">Creado localmente</span></div>
+
+      <div class="detail"><b>Especie:</b> {{ personajeDetalle.species }}</div>
+      <div class="detail"><b>Género:</b> {{ personajeDetalle.gender }}</div>
+
+      <div class="detail">
+        <b>Fuente:</b>
+        <span class="badge badge-api" *ngIf="esDeAPI(personajeDetalle)">API</span>
+        <span class="badge badge-local" *ngIf="!esDeAPI(personajeDetalle)">Local</span>
       </div>
     </div>
   </div>
 </div>
+
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">

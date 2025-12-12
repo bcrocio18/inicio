@@ -1,0 +1,93 @@
+<!-- ======================= ENCABEZADO CURVO ======================= -->
+<div class="seccion-curva">
+  <h3>Gestión de Personajes</h3>
+</div>
+
+<!-- ======================= ESTADO DE CARGA ======================= -->
+<div *ngIf="loading" class="detalle-container">
+  <div class="cargando-container">
+    <div class="spinner"></div>
+    <p>Cargando información del personaje...</p>
+  </div>
+</div>
+
+<!-- ======================= CONTENIDO PRINCIPAL ======================= -->
+<div *ngIf="!loading && personaje" class="detalle-container">
+
+  <!-- Header con breadcrumb usando rutas -->
+  <div class="header">
+    <div class="breadcrumb">
+      <a [routerLink]="['/']">Inicio</a> / 
+      <a [routerLink]="['/']">Personajes</a> / 
+      <span>{{ personaje.name }}</span>
+    </div>
+  </div>
+
+  <!-- Información principal con imagen -->
+  <div class="detalle-principal">
+    <!-- Imagen segura: se renderiza solo si existe -->
+    <div class="imagen-container" *ngIf="personaje?.image">
+      <img [src]="personaje.image" alt="{{ personaje.name }}" class="personaje-imagen" />
+    </div>
+
+    <!-- Información del personaje -->
+    <div class="info">
+      <h2>{{ personaje?.name || 'Desconocido' }}</h2>
+      <p><b>Estado:</b> {{ personaje?.status || 'Desconocido' }}</p>
+      <p><b>Especie:</b> {{ personaje?.species || 'Desconocido' }}</p>
+      <p><b>Género:</b> {{ personaje?.gender || 'Desconocido' }}</p>
+      <p><b>Origen:</b> {{ personaje?.origin?.name || personaje?.origin || 'Desconocido' }}</p>
+      <p><b>Ubicación:</b> {{ personaje?.location?.name || personaje?.location || 'Desconocido' }}</p>
+      <p>
+        <b>Fuente:</b>
+        <span *ngIf="personaje?.id < 1000">Local</span>
+        <span *ngIf="personaje?.id >= 1000">API</span>
+      </p>
+    </div>
+  </div>
+
+<!-- Historial de películas / episodios -->
+<h3 class="titulo-historial">Historial de Películas / Episodios</h3>
+
+<div class="episodios-grid" *ngIf="peliculas.length > 0; else sinHistorial">
+  <!-- Tarjeta de episodio - HAZLA CLICKEABLE -->
+  <div class="episodio-card" 
+       *ngFor="let ep of peliculas" 
+       (click)="abrirModalPelicula(ep)">
+    
+    <div class="episodio-header">
+      <span class="badge">{{ ep.episode || 'EP' }}</span>
+    </div>
+
+    <!-- Corrige la ruta de la imagen -->
+    <img src="../../assets/episodios/default.png" alt="Imagen por defecto" class="episodio-imagen">
+
+    <div class="episodio-content">
+      <h4>{{ ep.name || 'Sin título' }}</h4>
+      <p class="fecha">{{ ep.air_date || 'Fecha desconocida' }}</p>
+      <p class="descripcion">
+        Este episodio es parte del universo de Rick and Morty y forma parte del historial del personaje.
+      </p>
+      
+      <!-- Botón para abrir modal (opcional) -->
+      <button class="btn-detalles" (click)="abrirModalPelicula(ep); $event.stopPropagation()">
+        Ver detalles
+      </button>
+    </div>
+  </div>
+</div>
+
+  <ng-template #sinHistorial>
+    <p>No hay historial disponible.</p>
+  </ng-template>
+
+</div>
+
+<!-- ======================= ESTADO SIN DATOS ======================= -->
+<div *ngIf="!loading && !personaje" class="detalle-container">
+  <div class="error-container">
+    <h3>Personaje no encontrado</h3>
+    <p>No se pudo cargar la información del personaje.</p>
+    <button [routerLink]="['/']" class="btn-volver">Volver al inicio</button>
+  </div>
+</div>
